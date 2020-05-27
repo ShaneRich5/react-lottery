@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import loadWeb3 from './web3';
 
 function App() {
+  loadWeb3().then(web3 => web3.eth.getAccounts()).then(console.log);
   return (
     <div className="App">
       <header className="App-header">
