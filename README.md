@@ -5,6 +5,7 @@ This react app communicates with a lottery contract on the ethereum blockchain. 
 The app is currently being hosted [here][app_url].
 
 ## Setup
+1. Install metamask chrome extension by visiting https://metamask.io/.
 1. Install yarn
    ```
    npm install -g yarn
