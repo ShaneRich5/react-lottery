@@ -1,44 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ethereum Lottery
 
-## Available Scripts
+This react app communicates with a lottery contract on the ethereum blockchain. It allows players to start a new lottery, enter for a chance to win and select a winner.
 
-In the project directory, you can run:
+The app is currently being hosted [here][app_url].
 
-### `yarn start`
+## Setup
+1. Install yarn
+   ```
+   npm install -g yarn
+   ```
+1. Install the node dependencies
+   ```
+   yarn
+   ```
+1. (optional) Install firebase
+   ```
+   yarn global add firebase-tools
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Development
+1. Start the development server.
+   ```
+   yarn start
+   ```
+1. Open [http://localhost:3000][local_url] to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Testing
+1. Start interactive prompt
+   ```
+   yarn test
+   ```
 
-### `yarn test`
+## Deployments
+1. Create a new build
+   ```
+   yarn build
+   ```
+1. Follow the instructions [here][firebase_instructions] to create the deployment configurations.
+1. To deploy the application
+   ```
+   yarn deploy
+   ```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### Useful links
+* [React documentation](https://reactjs.org/)
+* [Create React App](https://facebook.github.io/create-react-app/docs/getting-started)
+* [React Testing](https://facebook.github.io/create-react-app/docs/running-tests)
+* [General Deployments](https://facebook.github.io/create-react-app/docs/deployment)
+* [Using Typescript with React](https://create-react-app.dev/docs/adding-typescript)
+* [Deploying to Firebase](https://create-react-app.dev/docs/deployment/#firebase)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+[firebase_instructions]: https://create-react-app.dev/docs/deployment/#firebase
+[local_url]: http://localhost:3000
+[app_url]: https://ethereum-lottery-7fb7b.web.app/
