@@ -25,23 +25,35 @@ class App extends React.Component<any, any> {
   onClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const accounts = await this.web3?.eth.getAccounts();
 
+    if (!isArray(accounts) || accounts.length <= 0) {
+      this.setState({ message: 'Oops! Failed to retreive your account' });
+      return;
+    }
+
     this.setState({ message: 'Waiting on transaction success...' });
 
-    await this.lottery?.methods.pickWinner().send()
+    await this.lottery?.methods.pickWinner().send({
+      from: accounts[0]
+    });
+
+    this.setState({ message: 'A winner has been picked!' });
   }
 
   onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const accounts = await this.web3?.eth.getAccounts();
 
+    if (!isArray(accounts) || accounts.length <= 0) {
+      this.setState({ message: 'Oops! Failed to retreive your account' });
+      return;
+    }
+
     this.setState({ message: 'Waiting on transaction success...' });
 
-    if (isArray(accounts) && accounts.length > 0) {
-      await this.lottery?.methods.enter().send({
-        from: accounts[0],
-        value: this.web3?.utils.toWei(this.state.value, 'ether')
-      });
-    }
+    await this.lottery?.methods.enter().send({
+      from: accounts[0],
+      value: this.web3?.utils.toWei(this.state.value, 'ether')
+    });
 
     this.setState({ 'message': 'You have been entered!' });
   }
@@ -68,6 +80,11 @@ class App extends React.Component<any, any> {
           </div>
           <button>Enter</button>
         </form>
+
+        <hr />
+
+        <h4>Ready to pick a winner?</h4>
+        <button onClick={this.onClick}>Pick aw winner!</button>
 
         <hr />
 
