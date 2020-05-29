@@ -6,20 +6,9 @@ import createContract from './lottery.service';
 
 class App extends React.Component {
   async componentDidMount() {
-    // const lottery = await createContract().then();
-    // const manager = await lottery.methods.manager().call();
-    // console.log(manager);
-
     const lottery = await createContract();
     const manager = await lottery.methods.manager().call();
-
-    // .then(console.log);
-    // .then(lottery => lottery.methods.manager().call())
-    // .then(console.log);
-    // const manager = await lottery.methods.manager().call();
     console.log(manager);
-
-    console.log('hi')
   }
 
   render() {
