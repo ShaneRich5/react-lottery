@@ -5,10 +5,16 @@ import './App.css';
 import createContract from './lottery.service';
 
 class App extends React.Component {
+  constructor(props: any) {
+    super(props);
+
+    this.state = { manager: '' };
+  }
+
   async componentDidMount() {
     const lottery = await createContract();
     const manager = await lottery.methods.manager().call();
-    console.log(manager);
+    this.setState({ manager });
   }
 
   render() {
