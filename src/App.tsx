@@ -5,7 +5,7 @@ import createContract from './lottery.service';
 import Web3 from 'web3';
 
 class App extends React.Component<any, any> {
-  state = { manager: '', players: [], balance: '' };
+  state = { manager: '', players: [], balance: '', value: '' };
   web3?: Web3;
 
   async componentDidMount() {
@@ -28,6 +28,19 @@ class App extends React.Component<any, any> {
           There are currently {this.state.players.length} people entered,
           competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
         </p>
+        <hr />
+
+        <form>
+          <h4>Want to try your luck?</h4>
+          <div>
+            <label>Amount of ether to enter</label>
+            <input
+              value={this.state.value}
+              onChange={event => this.setState({ value: event.target.value })}
+            />
+          </div>
+          <button>Enter</button>
+        </form>
       </div>
     );
   }
