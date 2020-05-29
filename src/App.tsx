@@ -1,28 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import loadWeb3 from './web3';
+import createContract from './lottery.service';
+import Web3 from 'web3';
 
-function App() {
-  loadWeb3().then(web3 => web3.eth.getAccounts()).then(console.log);
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+class App extends React.Component<any, any> {
+  state = { manager: '', players: [], balance: '' };
+  web3?: Web3;
+
+  async componentDidMount() {
+    const lottery = await createContract();
+    const manager = await lottery.methods.manager().call();
+    const players = await lottery.methods.getPlayers().call();
+
+    this.web3 = await loadWeb3();
+    const balance = await this.web3.eth.getBalance(lottery.options.address);
+
+    this.setState({ manager, players, balance });
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>Lottery Contract</h2>
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          This contract is managed by {this.state.manager}.
+          There are currently {this.state.players.length} people entered,
+          competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
