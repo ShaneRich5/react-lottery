@@ -1,11 +1,11 @@
 import React from 'react';
 import './app.css';
-import loadWeb3 from './web3.service';
-import createContract from './lottery.service';
+import loadWeb3 from '../services/web3.service';
+import createContract from '../services/lottery.service';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { isArray } from 'util';
-import { UnsupportedBrowserError } from './errors/unsupported-browser.error';
+import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
 
 class App extends React.Component<any, any> {
   state = { manager: '', players: [], balance: '', value: '', message: '' };

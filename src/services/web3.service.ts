@@ -1,6 +1,6 @@
 import Web3 from 'web3';
-import { UserDeniedAccessError } from './errors/user-denied-access.error';
-import { UnsupportedBrowserError } from './errors/unsupported-browser.error';
+import { UserDeniedAccessError } from '../errors/user-denied-access.error';
+import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
 
 const loadWeb3 = async () => {
     const { ethereum, web3: injectedWeb3 } = window;
