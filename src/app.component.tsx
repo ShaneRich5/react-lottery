@@ -1,10 +1,11 @@
 import React from 'react';
 import './app.css';
-import loadWeb3 from './web3';
+import loadWeb3 from './web3.service';
 import createContract from './lottery.service';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { isArray } from 'util';
+import { UnsupportedBrowserError } from './errors/unsupported-browser.error';
 
 class App extends React.Component<any, any> {
   state = { manager: '', players: [], balance: '', value: '', message: '' };
@@ -12,14 +13,34 @@ class App extends React.Component<any, any> {
   lottery?: Contract;
 
   async componentDidMount() {
-    this.lottery = await createContract();
-    const manager = await this.lottery.methods.manager().call();
-    const players = await this.lottery.methods.getPlayers().call();
+    this.initializeLottery();
 
-    this.web3 = await loadWeb3();
-    const balance = await this.web3.eth.getBalance(this.lottery.options.address);
+  }
 
-    this.setState({ manager, players, balance });
+  initializeLottery = async () => {
+    try {
+      this.web3 = await loadWeb3();
+    } catch (error) {
+      if (error instanceof UnsupportedBrowserError) {
+        console.log({ error });
+      }
+      throw error;
+    }
+
+    try {
+      this.lottery = await createContract();
+    } catch {
+
+    }
+
+    if (this.web3 && this.lottery) {
+      const manager = await this.lottery.methods.manager().call();
+      const players = await this.lottery.methods.getPlayers().call();
+
+      const balance = await this.web3.eth.getBalance(this.lottery.options.address);
+
+      this.setState({ manager, players, balance });
+    }
   }
 
   onClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
