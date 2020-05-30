@@ -6,7 +6,6 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { isArray } from 'util';
 import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
-import { ErrorModal } from './error-modal.component';
 import { UserDeniedAccessError } from '../errors/user-denied-access.error';
 
 type AppState = {
@@ -15,8 +14,6 @@ type AppState = {
   players: string[],
   balance: string | number,
   value: string | number,
-  showModal: boolean,
-  modalTitle: string,
 };
 
 class App extends React.Component<{}, AppState> {
@@ -26,8 +23,6 @@ class App extends React.Component<{}, AppState> {
     balance: '',
     value: '',
     message: '',
-    showModal: false,
-    modalTitle: '',
   };
   web3?: Web3;
   lottery?: Contract;
@@ -37,7 +32,6 @@ class App extends React.Component<{}, AppState> {
   }
 
   initializeLottery = async () => {
-    this.setState({ showModal: false });
 
     console.log('initializing')
 
@@ -50,15 +44,15 @@ class App extends React.Component<{}, AppState> {
 
       const balance = await this.web3.eth.getBalance(this.lottery.options.address);
 
-      this.setState({ manager, players, balance, showModal: false });
+      this.setState({ manager, players, balance });
 
     } catch (error) {
       if (error instanceof UnsupportedBrowserError) {
-        this.setState({ showModal: true, modalTitle: 'Oops! Your browser is unsupported.' });
+        this.setState({ message: 'Oops! Your browser is unsupported.' });
       } else if (error instanceof UserDeniedAccessError) {
-        this.setState({ showModal: false, message: 'Authorization required.' });
+        this.setState({ message: 'Authorization required.' });
       } else {
-        this.setState({ showModal: false, message: 'Failed to start the lottery contract.' });
+        this.setState({ message: 'Failed to start the lottery contract.' });
       }
     }
   }
@@ -67,7 +61,7 @@ class App extends React.Component<{}, AppState> {
     const accounts = await this.web3?.eth.getAccounts();
 
     if (!isArray(accounts) || accounts.length <= 0) {
-      this.setState({ showModal: true, modalTitle: 'Oops! Failed to retreive your account' });
+      this.setState({ message: 'Oops! Failed to retreive your account' });
       return;
     }
 
@@ -85,7 +79,7 @@ class App extends React.Component<{}, AppState> {
     const accounts = await this.web3?.eth.getAccounts();
 
     if (!isArray(accounts) || accounts.length <= 0) {
-      this.setState({ showModal: false, message: 'Oops! Failed to retreive your account' });
+      this.setState({ message: 'Oops! Failed to retreive your account' });
       return;
     }
 
@@ -102,11 +96,6 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div>
-        <ErrorModal
-          shouldShow={this.state.showModal}
-          title={this.state.modalTitle}
-        ></ErrorModal>
-
         <h2>Lottery Contract</h2>
         <p>
           This contract is managed by {this.state.manager}.
