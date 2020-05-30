@@ -6,6 +6,7 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { isArray } from 'util';
 import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
+import { ErrorModal } from './error-modal.component';
 
 class App extends React.Component<any, any> {
   state = { manager: '', players: [], balance: '', value: '', message: '' };
@@ -53,7 +54,7 @@ class App extends React.Component<any, any> {
 
     this.setState({ message: 'Waiting on transaction success...' });
 
-    await this.lottery?.methods.pickWinner().send({
+    await this.lottery!.methods.pickWinner().send({
       from: accounts[0]
     });
 
@@ -62,7 +63,7 @@ class App extends React.Component<any, any> {
 
   onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const accounts = await this.web3?.eth.getAccounts();
+    const accounts = await this.web3!.eth.getAccounts();
 
     if (!isArray(accounts) || accounts.length <= 0) {
       this.setState({ message: 'Oops! Failed to retreive your account' });
@@ -71,9 +72,9 @@ class App extends React.Component<any, any> {
 
     this.setState({ message: 'Waiting on transaction success...' });
 
-    await this.lottery?.methods.enter().send({
+    await this.lottery!.methods.enter().send({
       from: accounts[0],
-      value: this.web3?.utils.toWei(this.state.value, 'ether')
+      value: this.web3!.utils.toWei(this.state.value, 'ether')
     });
 
     this.setState({ 'message': 'You have been entered!' });
@@ -82,11 +83,12 @@ class App extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <ErrorModal shouldShow={true} title="Error!"></ErrorModal>
         <h2>Lottery Contract</h2>
         <p>
           This contract is managed by {this.state.manager}.
           There are currently {this.state.players.length} people entered,
-          competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
+          competing to win {this.web3!.utils.fromWei(this.state.balance)} ether!
         </p>
         <hr />
 
