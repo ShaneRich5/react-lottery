@@ -119,7 +119,7 @@ class App extends React.Component<{}, AppState> {
         <hr />
 
         <h4>Ready to pick a winner?</h4>
-        <button onClick={this.onClick}>Pick aw winner!</button>
+        <button onClick={this.onClick}>Pick a winner!</button>
 
         <hr />
 
