@@ -7,6 +7,7 @@ import { Contract } from 'web3-eth-contract';
 import { isArray } from 'util';
 import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
 import { UserDeniedAccessError } from '../errors/user-denied-access.error';
+import Container from 'react-bootstrap/Container';
 
 type AppState = {
   manager: string,
@@ -95,36 +96,38 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     return (
-      <div>
-        <h2>Lottery Contract</h2>
-        <p>
-          This contract is managed by {this.state.manager}.
+      <Container className="App">
+        <div>
+          <h2>Lottery Contract</h2>
+          <p>
+            This contract is managed by {this.state.manager}.
           There are currently {this.state.players.length} people entered,
           competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
         </p>
-        <hr />
+          <hr />
 
-        <form onSubmit={this.onSubmit}>
-          <h4>Want to try your luck?</h4>
-          <div>
-            <label>Amount of ether to enter</label>
-            <input
-              value={this.state.value}
-              onChange={event => this.setState({ value: event.target.value })}
-            />
-          </div>
-          <button>Enter</button>
-        </form>
+          <form onSubmit={this.onSubmit}>
+            <h4>Want to try your luck?</h4>
+            <div>
+              <label>Amount of ether to enter</label>
+              <input
+                value={this.state.value}
+                onChange={event => this.setState({ value: event.target.value })}
+              />
+            </div>
+            <button>Enter</button>
+          </form>
 
-        <hr />
+          <hr />
 
-        <h4>Ready to pick a winner?</h4>
-        <button onClick={this.onClick}>Pick a winner!</button>
+          <h4>Ready to pick a winner?</h4>
+          <button onClick={this.onClick}>Pick a winner!</button>
 
-        <hr />
+          <hr />
 
-        <h1>{this.state.message}</h1>
-      </div>
+          <h1>{this.state.message}</h1>
+        </div>
+      </Container>
     );
   }
 }
