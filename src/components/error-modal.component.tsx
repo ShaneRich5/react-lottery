@@ -6,6 +6,7 @@ type ErrorModalProps = {
     shouldShow: boolean,
     title: string,
     onCloseHandler?: Function,
+    onRetryClickedHandler?: Function,
 };
 
 export const ErrorModal: FunctionComponent<ErrorModalProps> = ({ shouldShow, title, onCloseHandler }) => (
