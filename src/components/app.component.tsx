@@ -8,7 +8,15 @@ import { isArray } from 'util';
 import { UnsupportedBrowserError } from '../errors/unsupported-browser.error';
 import { ErrorModal } from './error-modal.component';
 
-class App extends React.Component<any, any> {
+type AppState = {
+  manager: string,
+  message: string,
+  players: string[],
+  balance: string | number,
+  value: string | number,
+};
+
+class App extends React.Component<{}, AppState> {
   state = { manager: '', players: [], balance: '', value: '', message: '' };
   web3?: Web3;
   lottery?: Contract;
@@ -23,6 +31,7 @@ class App extends React.Component<any, any> {
       this.web3 = await loadWeb3();
     } catch (error) {
       if (error instanceof UnsupportedBrowserError) {
+
         console.log({ error });
       }
       throw error;
@@ -88,7 +97,7 @@ class App extends React.Component<any, any> {
         <p>
           This contract is managed by {this.state.manager}.
           There are currently {this.state.players.length} people entered,
-          competing to win {this.web3!.utils.fromWei(this.state.balance)} ether!
+          competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
         </p>
         <hr />
 
