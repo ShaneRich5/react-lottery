@@ -14,10 +14,20 @@ type AppState = {
   players: string[],
   balance: string | number,
   value: string | number,
+  showModal: boolean,
+  modalTitle: string,
 };
 
 class App extends React.Component<{}, AppState> {
-  state = { manager: '', players: [], balance: '', value: '', message: '' };
+  state = {
+    players: [],
+    manager: '',
+    balance: '',
+    value: '',
+    message: '',
+    showModal: false,
+    modalTitle: '',
+  };
   web3?: Web3;
   lottery?: Contract;
 
@@ -31,10 +41,10 @@ class App extends React.Component<{}, AppState> {
       this.web3 = await loadWeb3();
     } catch (error) {
       if (error instanceof UnsupportedBrowserError) {
-
-        console.log({ error });
+        this.setState({ showModal: true, modalTitle: 'Oops! Your browser is unsupported.' });
+      } else {
+        throw error;
       }
-      throw error;
     }
 
     try {
@@ -92,7 +102,7 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div>
-        <ErrorModal shouldShow={true} title="Error!"></ErrorModal>
+        <ErrorModal shouldShow={this.state.showModal} title={this.state.modalTitle}></ErrorModal>
         <h2>Lottery Contract</h2>
         <p>
           This contract is managed by {this.state.manager}.
