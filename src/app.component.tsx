@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './app.css';
 import loadWeb3 from './web3';
 import createContract from './lottery.service';
 import Web3 from 'web3';
