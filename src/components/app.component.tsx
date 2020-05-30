@@ -56,7 +56,7 @@ class App extends React.Component<{}, AppState> {
       if (error instanceof UnsupportedBrowserError) {
         this.setState({ showModal: true, modalTitle: 'Oops! Your browser is unsupported.' });
       } else if (error instanceof UserDeniedAccessError) {
-        this.setState({ showModal: false, modalTitle: 'Authorization required.' });
+        this.setState({ showModal: false, message: 'Authorization required.' });
       } else {
         this.setState({ showModal: false, message: 'Failed to start the lottery contract.' });
       }
@@ -85,7 +85,7 @@ class App extends React.Component<{}, AppState> {
     const accounts = await this.web3?.eth.getAccounts();
 
     if (!isArray(accounts) || accounts.length <= 0) {
-      this.setState({ showModal: true, modalTitle: 'Oops! Failed to retreive your account' });
+      this.setState({ showModal: false, message: 'Oops! Failed to retreive your account' });
       return;
     }
 
