@@ -166,6 +166,11 @@ class App extends React.Component<{}, AppState> {
             {onboardingComponent}
           </Col>
         </Row>
+        <Row style={{ marginTop: 16 }}>
+          <Col>
+            <a href="https://fontawesome.com/license">FontAwesome Public License</a>
+          </Col>
+        </Row>
       </Container >
     );
   }
