@@ -17,6 +17,7 @@ import { UserDeniedAccessError } from '../../errors/user-denied-access.error';
 import { UnsupportedBrowserError } from '../../errors/unsupported-browser.error';
 import { ERROR_MESSAGE, PENDING_MESSAGE, SUCCESS_MESSAGE, EMPTY_MESSAGE } from './app.constants';
 import './app.css';
+import { EntryForm } from '../entry-form/entry-form.component';
 
 type AppState = {
   manager: string,
@@ -136,6 +137,13 @@ class App extends React.Component<{}, AppState> {
         </Row>
         <Row>
           <Col xs={12}>
+            <EntryForm
+              value={this.state.value}
+              isInputDisabled={this.isLoading() || !isNull(onboardingComponent)}
+              isButtonDisabled={this.isLoading() || this.state.value === EMPTY_MESSAGE || !isNull(onboardingComponent)}
+              onValueChangeHandler={(event: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: event.target.value })}
+              onSubmitHandler={this.onSubmit}
+            />
             <Form>
               <h4>Want to try your luck? <span role="img" aria-label="ether to enter">💸</span></h4>
               <Row>
