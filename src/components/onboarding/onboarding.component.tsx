@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import metamaskLogo from './metamask.svg';
+import externalLinkSvg from './external-link-alt-solid.svg';
 
 export const Onboarding = () => (
     <Accordion defaultActiveKey="1">
@@ -15,16 +16,16 @@ export const Onboarding = () => (
             <Accordion.Collapse eventKey="1">
                 <Card.Body>
                     <ol>
-                        <li>Create a wallet <img height={30} src={metamaskLogo} alt="Logo" /></li>
+                        <li>Create a wallet <img height={30} src={metamaskLogo} alt="MetaMask logo" /></li>
                         <ol>
-                            <li>Install the <a href="https://metamask.io/download.html" target="_blank" rel="noopener noreferrer"> Meta Mask</a> Chrome extension.</li>
+                            <li>Install the <a href="https://metamask.io/download.html" target="_blank" rel="noopener noreferrer"> Meta Mask <img alt="external link icon" height={15} src={externalLinkSvg} /></a> Chrome extension.</li>
                             <li>Use the chrome extension to create a new account.</li>
                             <li>After creating your account select the Rinkeby Test Network.</li>
                         </ol>
                         <li>Fund your test wallet</li>
                         <ol>
                             <li>
-                                Visit <a href="https://faucet.rinkeby.io/" target="_blank" rel="noopener noreferrer">faucet.rinkeby.io</a> to receive free ether on the Rinkeby test network.<br />
+                                Visit <a href="https://faucet.rinkeby.io/" target="_blank" rel="noopener noreferrer">faucet.rinkeby.io <img alt="external link icon" height={15} src={externalLinkSvg} /></a> to receive free ether on the Rinkeby test network.<br />
                                 The steps below are a summarized version of the instruction on how to receive the ether.
                             </li>
                             <li>Include your ethereum account address as in a tweet or post on facebook.</li>
@@ -34,5 +35,5 @@ export const Onboarding = () => (
                 </Card.Body>
             </Accordion.Collapse>
         </Card>
-    </Accordion>
+    </Accordion >
 );
