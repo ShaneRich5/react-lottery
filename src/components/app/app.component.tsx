@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import React from 'react';
-import { isArray } from 'util';
+import { isArray, isNull } from 'util';
 import { Contract } from 'web3-eth-contract';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
+import { Onboarding } from '../onboarding/onboarding.component';
 import loadWeb3 from '../../services/web3.service';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -114,12 +115,13 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     const loadingIndicator = this.isLoading() ? <Spinner animation="border" /> : null;
+    const onboardingComponent = this.state.message === ERROR_MESSAGE.UNSUPPORTED_BROWSER ? < Onboarding /> : null;
 
     return (
       <Container className="App">
         <Row>
           <Col xs={12}>
-            <h2>Lottery Contract</h2>
+            <h2>Lottery Contract <span role="img" aria-label="money bags">💰💰💰</span></h2>
           </Col>
           <Col xs={12}>
             <p>
@@ -135,7 +137,7 @@ class App extends React.Component<{}, AppState> {
         <Row>
           <Col xs={12}>
             <Form>
-              <h4>Want to try your luck?</h4>
+              <h4>Want to try your luck? <span role="img" aria-label="ether to enter">💸</span></h4>
               <Row>
                 <Col xs={4}>
                   <InputGroup className="mb-3">
@@ -144,7 +146,7 @@ class App extends React.Component<{}, AppState> {
                       aria-label="Amount of ether to enter"
                       aria-describedby="ether-entry"
                       value={this.state.value}
-                      disabled={this.isLoading()}
+                      disabled={this.isLoading() || !isNull(onboardingComponent)}
                       onChange={event => this.setState({ value: event.target.value })}
                     />
                     <InputGroup.Append>
@@ -155,7 +157,7 @@ class App extends React.Component<{}, AppState> {
                 <Col xs={2}>
                   <Button
                     variant="outline-primary"
-                    disabled={this.isLoading() || this.state.value === EMPTY_MESSAGE}
+                    disabled={this.isLoading() || this.state.value === EMPTY_MESSAGE || !isNull(onboardingComponent)}
                     onClick={this.onSubmit}
                   >Enter</Button>
                 </Col>
@@ -166,12 +168,12 @@ class App extends React.Component<{}, AppState> {
         <hr />
         <Row>
           <Col xs={12}>
-            <h4>Ready to pick a winner?</h4><br />
+            <h4>Ready to pick a winner? <span role="img" aria-label="choose a winner">🤲</span></h4>
           </Col>
           <Col xs={12}>
             <Button
               variant="outline-primary"
-              disabled={this.isLoading()}
+              disabled={this.isLoading() || !isNull(onboardingComponent)}
               onClick={this.onClick}
             >Pick a winner!</Button>
           </Col>
@@ -181,6 +183,9 @@ class App extends React.Component<{}, AppState> {
           <Col xs={12}>
             <h1 style={{ display: 'inline' }}>{this.state.message}</h1>
             {loadingIndicator}
+          </Col>
+          <Col xs={12} style={{ marginTop: 16 }}>
+            {onboardingComponent}
           </Col>
         </Row>
       </Container >
