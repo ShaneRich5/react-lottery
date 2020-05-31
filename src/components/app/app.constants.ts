@@ -8,7 +8,7 @@ export const ERROR_MESSAGE = {
 
 export const PENDING_MESSAGE = {
     TRANSACTION: 'Waiting on transaction success...',
-    LOADING_LOTTERY_CONTRACT: 'Loading...'
+    LOADING_LOTTERY_CONTRACT: 'Loading lottery...'
 };
 
 export const SUCCESS_MESSAGE = {

@@ -2,8 +2,15 @@ import Web3 from 'web3';
 import React from 'react';
 import { isArray } from 'util';
 import { Contract } from 'web3-eth-contract';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import loadWeb3 from '../../services/web3.service';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import createContract from '../../services/lottery.service';
 import { UserDeniedAccessError } from '../../errors/user-denied-access.error';
 import { UnsupportedBrowserError } from '../../errors/unsupported-browser.error';
@@ -80,7 +87,7 @@ class App extends React.Component<{}, AppState> {
     this.setState({ message: SUCCESS_MESSAGE.WINNER_PICKED });
   }
 
-  onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const accounts = await this.web3?.eth.getAccounts();
 
@@ -103,40 +110,80 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
+  isLoading = () => Object.values(PENDING_MESSAGE).includes(this.state.message);
+
   render() {
+    const loadingIndicator = this.isLoading() ? <Spinner animation="border" /> : null;
+
     return (
       <Container className="App">
-        <div>
-          <h2>Lottery Contract</h2>
-          <p>
-            This contract is managed by {this.state.manager}.
-          There are currently {this.state.players.length} people entered,
-          competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
-        </p>
-          <hr />
-
-          <form onSubmit={this.onSubmit}>
-            <h4>Want to try your luck?</h4>
-            <div>
-              <label>Amount of ether to enter</label>
-              <input
-                value={this.state.value}
-                onChange={event => this.setState({ value: event.target.value })}
-              />
-            </div>
-            <button>Enter</button>
-          </form>
-
-          <hr />
-
-          <h4>Ready to pick a winner?</h4>
-          <button onClick={this.onClick}>Pick a winner!</button>
-
-          <hr />
-
-          <h1>{this.state.message}</h1>
-        </div>
-      </Container>
+        <Row>
+          <Col xs={12}>
+            <h2>Lottery Contract</h2>
+          </Col>
+          <Col xs={12}>
+            <p>
+              This contract is managed by {this.state.manager}.
+              There are currently {this.state.players.length} people entered,
+              competing to win {this.web3?.utils.fromWei(this.state.balance)} ether!
+            </p>
+          </Col>
+          <Col xs={12}>
+            <hr />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <Form>
+              <h4>Want to try your luck?</h4>
+              <Row>
+                <Col xs={4}>
+                  <InputGroup className="mb-3">
+                    <FormControl
+                      placeholder="Amount of ether to enter"
+                      aria-label="Amount of ether to enter"
+                      aria-describedby="ether-entry"
+                      value={this.state.value}
+                      disabled={this.isLoading()}
+                      onChange={event => this.setState({ value: event.target.value })}
+                    />
+                    <InputGroup.Append>
+                      <InputGroup.Text id="ether-entry">ether</InputGroup.Text>
+                    </InputGroup.Append>
+                  </InputGroup>
+                </Col>
+                <Col xs={2}>
+                  <Button
+                    variant="outline-primary"
+                    disabled={this.isLoading() || this.state.value === EMPTY_MESSAGE}
+                    onClick={this.onSubmit}
+                  >Enter</Button>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col xs={12}>
+            <h4>Ready to pick a winner?</h4><br />
+          </Col>
+          <Col xs={12}>
+            <Button
+              variant="outline-primary"
+              disabled={this.isLoading()}
+              onClick={this.onClick}
+            >Pick a winner!</Button>
+          </Col>
+          <Col xs={12}>
+            <hr />
+          </Col>
+          <Col xs={12}>
+            <h1 style={{ display: 'inline' }}>{this.state.message}</h1>
+            {loadingIndicator}
+          </Col>
+        </Row>
+      </Container >
     );
   }
 }
