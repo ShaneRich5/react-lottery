@@ -1,5 +1,7 @@
 # Ethereum Lottery
 
+[![Build Status](https://travis-ci.org/ShaneRich5/react-lottery.svg?branch=master)](https://travis-ci.org/ShaneRich5/react-lottery)
+
 This react app communicates with a lottery contract on the ethereum blockchain. It allows players to start a new lottery, enter for a chance to win and select a winner.
 
 The app is currently being hosted [here][app_url].

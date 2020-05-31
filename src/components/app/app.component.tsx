@@ -1,17 +1,16 @@
 import Web3 from 'web3';
 import React from 'react';
-import { isArray } from 'util';
+import { isArray, isNull } from 'util';
 import { Contract } from 'web3-eth-contract';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import loadWeb3 from '../../services/web3.service';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import createContract from '../../services/lottery.service';
+import { EntryForm } from '../entry-form/entry-form.component';
+import { Onboarding } from '../onboarding/onboarding.component';
 import { UserDeniedAccessError } from '../../errors/user-denied-access.error';
 import { UnsupportedBrowserError } from '../../errors/unsupported-browser.error';
 import { ERROR_MESSAGE, PENDING_MESSAGE, SUCCESS_MESSAGE, EMPTY_MESSAGE } from './app.constants';
@@ -114,12 +113,13 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     const loadingIndicator = this.isLoading() ? <Spinner animation="border" /> : null;
+    const onboardingComponent = this.state.message === ERROR_MESSAGE.UNSUPPORTED_BROWSER ? < Onboarding /> : null;
 
     return (
       <Container className="App">
         <Row>
           <Col xs={12}>
-            <h2>Lottery Contract</h2>
+            <h2>Lottery Contract <span role="img" aria-label="money bags">💰💰💰</span></h2>
           </Col>
           <Col xs={12}>
             <p>
@@ -134,44 +134,24 @@ class App extends React.Component<{}, AppState> {
         </Row>
         <Row>
           <Col xs={12}>
-            <Form>
-              <h4>Want to try your luck?</h4>
-              <Row>
-                <Col xs={4}>
-                  <InputGroup className="mb-3">
-                    <FormControl
-                      placeholder="Amount of ether to enter"
-                      aria-label="Amount of ether to enter"
-                      aria-describedby="ether-entry"
-                      value={this.state.value}
-                      disabled={this.isLoading()}
-                      onChange={event => this.setState({ value: event.target.value })}
-                    />
-                    <InputGroup.Append>
-                      <InputGroup.Text id="ether-entry">ether</InputGroup.Text>
-                    </InputGroup.Append>
-                  </InputGroup>
-                </Col>
-                <Col xs={2}>
-                  <Button
-                    variant="outline-primary"
-                    disabled={this.isLoading() || this.state.value === EMPTY_MESSAGE}
-                    onClick={this.onSubmit}
-                  >Enter</Button>
-                </Col>
-              </Row>
-            </Form>
+            <EntryForm
+              value={this.state.value}
+              isInputDisabled={this.isLoading() || !isNull(onboardingComponent)}
+              isButtonDisabled={this.isLoading() || this.state.value === EMPTY_MESSAGE || !isNull(onboardingComponent)}
+              onValueChangeHandler={(event: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: event.target.value })}
+              onSubmitHandler={this.onSubmit}
+            />
           </Col>
         </Row>
         <hr />
         <Row>
           <Col xs={12}>
-            <h4>Ready to pick a winner?</h4><br />
+            <h4>Ready to pick a winner? <span role="img" aria-label="choose a winner">🤲</span></h4>
           </Col>
           <Col xs={12}>
             <Button
               variant="outline-primary"
-              disabled={this.isLoading()}
+              disabled={this.isLoading() || !isNull(onboardingComponent)}
               onClick={this.onClick}
             >Pick a winner!</Button>
           </Col>
@@ -181,6 +161,14 @@ class App extends React.Component<{}, AppState> {
           <Col xs={12}>
             <h1 style={{ display: 'inline' }}>{this.state.message}</h1>
             {loadingIndicator}
+          </Col>
+          <Col xs={12} style={{ marginTop: 16 }}>
+            {onboardingComponent}
+          </Col>
+        </Row>
+        <Row style={{ marginTop: 16 }}>
+          <Col>
+            <a href="https://fontawesome.com/license">FontAwesome Public License</a>
           </Col>
         </Row>
       </Container >
